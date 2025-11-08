@@ -62,6 +62,22 @@ open class ShipAPI(val system: IComputerSystem) : ILuaAPI {
         getShip().transform.shipToWorldRotation.toLua()
 
     @LuaFunction
+    fun getEulerAnglesXYZ() =
+        getShip().transform.shipToWorldRotation.getEulerAnglesXYZ(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesYXZ() =
+        getShip().transform.shipToWorldRotation.getEulerAnglesYXZ(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesZXY() =
+        getShip().transform.shipToWorldRotation.getEulerAnglesZXY(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesZYX() =
+        getShip().transform.shipToWorldRotation.getEulerAnglesZYX(Vector3d()).toLua()
+
+    @LuaFunction
     fun getScale(): Map<String, Double> =
         getShip().transform.shipToWorldScaling.toLua()
 
