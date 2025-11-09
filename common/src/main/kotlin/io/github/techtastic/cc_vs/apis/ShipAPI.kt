@@ -105,6 +105,15 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
     }
 
     @LuaFunction
+    fun getConstraints(): List<*> {
+        val accessor = level.shipObjectWorld as ShipObjectWorldAccessor
+        return accessor.shipIdToConstraints.getOrDefault(ship.id, setOf()).map { id ->
+            accessor.constraints[id]?.let { VSConstraintAndId(id, it) }
+        }.map { combo -> combo?.toLua() }
+    }
+}
+
+    @LuaFunction
     fun getTransformationMatrix(): List<List<Double>> {
         val transform = this.ship.transform.shipToWorld
         val matrix: MutableList<List<Double>> = mutableListOf()
@@ -116,12 +125,3 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
 
         return matrix.toList()
     }
-
-    @LuaFunction
-    fun getConstraints(): List<*> {
-        val accessor = level.shipObjectWorld as ShipObjectWorldAccessor
-        return accessor.shipIdToConstraints.getOrDefault(ship.id, setOf()).map { id ->
-            accessor.constraints[id]?.let { VSConstraintAndId(id, it) }
-        }.map { combo -> combo?.toLua() }
-    }
-}
