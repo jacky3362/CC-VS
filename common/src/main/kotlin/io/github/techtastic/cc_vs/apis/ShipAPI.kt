@@ -125,3 +125,43 @@ open class ShipAPI(val ship: ServerShip, val level: ServerLevel) : ILuaAPI {
         }.map { combo -> combo?.toLua() }
     }
 }
+
+    @LuaFunction
+    fun getYaw(): Double =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZXY(Vector3d()).y
+
+    @LuaFunction
+    fun getPitch(): Double =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesYXZ(Vector3d()).z
+    @LuaFunction
+    fun getEulerAnglesXYZ() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesXYZ(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesYXZ() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesYXZ(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesZXY() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZXY(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getEulerAnglesZYX() =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZYX(Vector3d()).toLua()
+
+    @LuaFunction
+    fun getRoll(): Double =
+        this.ship.transform.shipToWorldRotation.getEulerAnglesZYX(Vector3d()).x
+
+    @LuaFunction
+    fun getRotationMatrix(): List<List<Double>> {
+        val transform = this.ship.transform.shipToWorld
+        val matrix: MutableList<List<Double>> = mutableListOf()
+
+        for (i in 0..3) {
+            val row = transform.getRow(i, Vector4d())
+            matrix.add(i, listOf(row.x, row.y, row.z, row.w))
+        }
+
+        return matrix.toList()
+    }
